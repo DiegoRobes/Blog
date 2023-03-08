@@ -52,9 +52,12 @@
                 <!-- blog post -->
                 <div class="blog-post">
                   <div class="post-img blog-img">
-                    <img src="../images/post.png" alt="" />
+                    <img src="{{ post.image.url }}" alt="" />
                   </div>
                   <div class="blog-post-content">
+                    <p>
+                      {{ post.content }}
+                    </p>
                     <p>
                       If you have invested time, energy and money on creating a
                       website for your business, you know very well that
