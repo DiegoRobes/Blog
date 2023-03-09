@@ -44,4 +44,8 @@ class Comments(models.Model):
     website = models.CharField(max_length=500)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-
+    # this is to make replies to comments. when you make a comment, it will be linked to a post, but not another
+    # comment, bc it is not necessarily a reply. se here we make sure that, if the comment is indeed a response
+    # to an existing comment, then we map it to its PARENT. this way, replies will be linked to both comments and posts
+    # the related_name arg makes it easier to make a query of the objects, calling them by 'replies'
+    parent = models.ForeignKey('self', on_delete=models.DO_NOTHING, null=True, blank=True, related_name='replies')
