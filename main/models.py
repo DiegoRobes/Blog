@@ -3,6 +3,22 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_img = models.ImageField(null=True, blank=True, upload_to='images/')
+    slug = models.SlugField(max_length=200, unique=True)
+    bio = models.CharField(max_length=200)
+
+    # this one creates a slug for any new entry on the tag models
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.user.username)
+        return super(Profile, self).save(self, *args, **kwargs)
+
+    def __str__(self):
+        return self.user.first_name
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=100, default="")
@@ -31,6 +47,7 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag, blank=True, related_name='post')
     count_view = models.IntegerField(null=True, blank=True)
     featured = models.BooleanField(default=False)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
 
 # model to store comments in the db, and the link them to a specific

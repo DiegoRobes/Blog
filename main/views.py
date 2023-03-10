@@ -114,3 +114,15 @@ def tag_page(request, slug):
     # send both queries into the context dic to be rendered dynamically
     context = {'name': slug, 'tag': tag, 'posts': posts_w_tag}
     return render(request, 'main/pages/tag.html', context=context)
+
+
+# for this one we create a page where you can see posts with the same tags
+def author_page(request, slug):
+    # first get the tag using the slug as the key
+    profile = m.Profile.objects.filter(slug=slug)[0]
+    # get all posts with the same tage
+    posts_by_auth = m.Post.objects.filter(author=profile.user).order_by('-count_view')[0:3]
+
+    # send both queries into the context dic to be rendered dynamically
+    context = {'author': profile,  'posts': posts_by_auth}
+    return render(request, 'main/pages/author.html', context=context)

@@ -76,10 +76,10 @@
                 </h3>
                 <div class="author">
                   <div class="profile-pic">
-                    <img src="{% static 'images/author.svg' %}" alt="" />
+                    <img src="{{ i.author.profile.profile_img.url }}" alt="" />
                   </div>
                   <div class="details">
-                    <p>Diego R.</p>
+                    <p>{{ i.author }}</p>
                     <small>{{ i.date|date }}</small>
                   </div>
                 </div>
@@ -112,14 +112,14 @@
               </div>
               <div class="card-content">
                 <h3>
-                  {{ i.post }}
+                  {{ i.title }}
                 </h3>
                 <div class="author">
                   <div class="profile-pic">
-                     <img src="{% static 'images/author.svg' %}" alt="" />
+                     <img src="{{ i.author.profile.profile_img.url }}" alt="" />
                   </div>
                   <div class="details">
-                    <p>Author name</p>
+                    <p>{{ i.author }} </p>
                     <small>{{ i.date|date }}</small>
                   </div>
                 </div>
