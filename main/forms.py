@@ -1,5 +1,6 @@
 from django import forms
-from main.models import Comments
+import main.models as m
+from django.utils.translation import gettext_lazy as _
 
 
 # we are using this scrip to first import the comment model from
@@ -9,10 +10,18 @@ from main.models import Comments
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = Comments
-        fields = {'content', 'name', 'email',  'website'}
+        model = m.Comments
+        fields = {'content', 'name', 'email', 'website'}
         widgets = {'content': forms.Textarea(attrs={'placeholder': 'Type your comment here...'}),
                    'name': forms.TextInput(attrs={'placeholder': 'Your name...'}),
                    'email': forms.TextInput(attrs={'placeholder': 'Your email...'}),
                    'website': forms.TextInput(attrs={'placeholder': 'Your website...'}),
                    }
+
+
+class SubscribeForm(forms.ModelForm):
+    class Meta:
+        model = m.Subscribe
+        fields = '__all__'
+        labels = {'email': _('')}
+        widgets = {'email': forms.EmailInput(attrs={'placeholder': 'Enter your email here...'})}

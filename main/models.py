@@ -25,11 +25,12 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    last_updated = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=20, unique=True)
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     tags = models.ManyToManyField(Tag, blank=True, related_name='post')
     count_view = models.IntegerField(null=True, blank=True)
+    featured = models.BooleanField(default=False)
 
 
 # model to store comments in the db, and the link them to a specific
@@ -38,7 +39,7 @@ class Post(models.Model):
 # more on that later
 class Comments(models.Model):
     content = models.TextField()
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     website = models.CharField(max_length=500)
@@ -49,3 +50,8 @@ class Comments(models.Model):
     # to an existing comment, then we map it to its PARENT. this way, replies will be linked to both comments and posts
     # the related_name arg makes it easier to make a query of the objects, calling them by 'replies'
     parent = models.ForeignKey('self', on_delete=models.DO_NOTHING, null=True, blank=True, related_name='replies')
+
+
+class Subscribe(models.Model):
+    email = models.EmailField(max_length=100)
+    date = models.DateTimeField(auto_now=True)

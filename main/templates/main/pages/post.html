@@ -60,7 +60,9 @@
                     </p>
                     <div class="blog-tags">
                       {% for i in post.tags.all %}
+                      <a href="{% url 'tag_page' i.slug %}">
                         <div class="tag">{{ i.name }}</div>
+                      </a>
                       {% endfor %}
 
                     </div>

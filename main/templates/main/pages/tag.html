@@ -1,4 +1,4 @@
-{% extend 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %} TAG {% endblock%}
 {% block content %}
@@ -21,10 +21,9 @@
 
             <center>
               <div class="typo">
-                <h1 class="title">Tag name</h1>
+                <h1 class="title">{{name}}</h1>
                 <p>
-                  Lorem ipsum began as scrambled, nonsensical Latin derived from
-                  Cicero's 1st-century BC text De Finibus Bonorum et Malorum.
+                  {{ tag.description }}
                 </p>
               </div>
             </center>
@@ -32,56 +31,33 @@
               <div class="container">
                 <h1 class="sec-title">Top posts</h1>
                 <div class="grid-2 blog">
+                  {% for i in posts %}
                   <!-- card -->
-                  <a href="#">
+                  <a href="{% url 'post_page' i.slug %}">
                     <div class="card">
                       <div class="post-img">
-                        <img src="../images/post.png" alt="" />
-                        <div class="tag">Tag name</div>
+                        <img src="{{ i.image.url }}" alt="" />
+                        <div class="tag">{{ i.tags.all.0.name }}</div>
                       </div>
                       <div class="card-content">
                         <h3>
-                          A blog title and other stuffs will add here, also we
-                          can include.
+                          {{ i.title }}
                         </h3>
                         <div class="author">
                           <div class="profile-pic">
-                            <img src="../images/author.svg" alt="" />
+                            <img src="{% static 'images/author.svg' %}" alt="" />
                           </div>
                           <div class="details">
-                            <p>Author name</p>
-                            <small>June 20, 2022</small>
+                            <p>{{ i.author }}</p>
+                            <small>{{ i.date|date }}</small>
                           </div>
                         </div>
                       </div>
                     </div>
                   </a>
                   <!-- card end-->
-                  <!-- card -->
-                  <a href="#">
-                    <div class="card">
-                      <div class="post-img">
-                        <img src="../images/post.png" alt="" />
-                        <div class="tag">Tag name</div>
-                      </div>
-                      <div class="card-content">
-                        <h3>
-                          A blog title and other stuffs will add here, also we
-                          can include.
-                        </h3>
-                        <div class="author">
-                          <div class="profile-pic">
-                            <img src="../images/author.svg" alt="" />
-                          </div>
-                          <div class="details">
-                            <p>Author name</p>
-                            <small>June 20, 2022</small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-                  <!-- card end-->
+                  {% endfor %}
+
                 </div>
               </div>
             </section>
