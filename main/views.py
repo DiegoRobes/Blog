@@ -41,8 +41,15 @@ def home(request):
     # finally we pass this queries into the context dict to be rendered in the view
     popular = m.Post.objects.all().order_by('-count_view')[0:3]
     recent = m.Post.objects.all().order_by('-date')[0:3]
+
     context = {"posts": all_posts, 'popular': popular, 'recent': recent,
                'subscribe_form': subscribe_form, 'message': message, 'featured': feature_post}
+    try:
+        info = m.WebsiteInfo.objects.all()[0]
+        context['info'] = info
+    except IndexError:
+        context['info'] = False
+
     return render(request, 'main/index.html', context=context)
 
 
@@ -126,3 +133,32 @@ def author_page(request, slug):
     # send both queries into the context dic to be rendered dynamically
     context = {'author': profile,  'posts': posts_by_auth}
     return render(request, 'main/pages/author.html', context=context)
+
+
+def search(request):
+    search_query = ''
+    # if the request has a parameter 'q', from the name of the input, then we assign it to search_query
+    if request.GET.get('q'):
+        search_query = request.GET.get('q')
+        print(search_query)
+    # then we try to get posts that contain the value of that search_query on their titles,
+    # using the title__contains arg. that way we create a new query containing all the matching posts. and send those
+    # posts to the context dict to be rendered dynamically
+    posts = m.Post.objects.filter(title__contains=search_query)
+    context = {'posts': posts, 'placeholder': search_query}
+    # however, if we get no posts, we send a message to the user, so they can correct the search
+    if len(posts) == 0:
+        context = {'posts': posts, 'placeholder': search_query, 'fail': True}
+    return render(request, 'main/pages/search.html', context=context)
+
+
+# to create the about page, we need to fetch the info from the model in the db. however, if there is no
+# info to be rendered, we send a different message to the user
+def about(request):
+    try:
+        info = m.WebsiteInfo.objects.all()[0]
+        context = {'info': info}
+    except IndexError:
+        context = {'info': False}
+
+    return render(request, 'main/pages/about.html', context=context)

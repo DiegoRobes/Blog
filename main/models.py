@@ -72,3 +72,13 @@ class Comments(models.Model):
 class Subscribe(models.Model):
     email = models.EmailField(max_length=100)
     date = models.DateTimeField(auto_now=True)
+
+
+# this next nodel is to create an ABOUT page on the site. we do it in a model to store in the db, bc this will give us
+# the chance to register this model in admin.py, and be able to edit its contents from the admin panel, without
+# the need to take the whole site down or mess with any html. also, it ensures the rendering can be dynamic
+class WebsiteInfo(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=500)
+    about = models.TextField()
+
